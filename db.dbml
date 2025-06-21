@@ -1,0 +1,75 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+// Это структура БД для Жилищника
+
+Table buildings {
+  UNOM integer [primary key]
+  FIAS uuid
+  house_street varchar(100)
+  house_number smallint
+  house_corpus smallint
+  dispatcher_id smallint [ref: > dispatcher.id]
+  management_organization_id smallint [ref: > management_organization.id]
+  section_id smallint [ref: > section.id]
+  build_date date
+  type building_series
+  heating_organization_id smallint [ref: > heating_organizations.id]
+  
+  //  Просится все площади убрать из дома в подъезд
+  total_living_area numeric
+  total_nonliving_area numeric
+  total_area numeric
+  roof_area numeric
+  stairwells_area numeric
+  corridor_area numeric
+  open_conv_area numeric
+  total_area_common_places numeric
+  total_area_nonusable_common_places numeric
+  total_area_usable_common_places numeric 
+}
+
+Table entrance {
+  id smallint [primary key]
+  floor_qty smallint
+  floor_heigth numeric
+}
+
+
+Table management_organization {
+  id integer [primary key]
+  company_name varchar(50)
+  service_start_at date
+}
+
+Table dispatcher {
+  id integer [primary key]
+  ODS_number smallint
+}
+
+Table section {
+  id smallint [primary key]
+  section_manager varchar(50)
+  section_craftsman varchar(50)
+
+}
+
+// ФИЛИАЛ ПАО МОЭК 
+Table heating_organizations {
+  branch_id smallint
+  MOEC_company smallint
+  client_number varchar(50)
+  contract_number varchar(50)
+}
+
+
+// Серия дома, закончить
+enum building_series {
+  'I-515'
+  'I-155'
+  'I-511'
+  'I-510'
+}
+
+enum heating_organization {
+}
