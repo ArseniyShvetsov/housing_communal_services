@@ -14,7 +14,7 @@ Table buildings {
   section_id smallint [ref: > section.id]
   build_date date
   type building_series
-  heating_organization_id smallint [ref: > heating_organizations.id]
+  heating_organization_id smallint [ref: > heating_organizations.branch_id]
   
   //  Просится все площади убрать из дома в подъезд
   total_living_area numeric
@@ -27,12 +27,54 @@ Table buildings {
   total_area_common_places numeric
   total_area_nonusable_common_places numeric
   total_area_usable_common_places numeric 
+  flats_qty_TBTI smallint //Кол-во квартир по ТБТИ, расчётный от подъездов?
+  flats_qty_EIRC smallint//Кол-во квартир по ЕИРЦ, расчётный от подъездов?
+  rooms_qty smallint //Кол-во комнат, расчётный от подъездов?
+  attics_area numeric //S чердаков 
+  basement_area numeric //S подвалов 
+  depr_TBTI numeric //% износа по ТБТИ
+  observ_date date //Дата обследования (% износа)
+  //РАСЧЁТНОЕ total_garbage_qty smallint [ref: > entrance.garbage_chute_qty] ////Кол-во стволов мусоропровода
+  //РАСЧЁТНОЕ total_garbage_length smallint [ref: > entrance.garbage_chute_length] //Протяженность ствола мусоропровода -- ПОДУМАТЬ, это по сути сумма длинны по подъездам
+  roof_material ENUM
+  walls_material ENUM
+  power_units_qty smallint
+  light_signs_qty smallint
+  street_signs_qty smallint
+  // РАСЧЁТНОЕ количество лифтов
+
+
 }
 
 Table entrance {
   id smallint [primary key]
   floor_qty smallint
   floor_heigth numeric
+}
+
+Table lifts {
+  id smallint [primary key]
+  
+}
+
+Table garbage {
+  id smallint [primary key]
+  entrance_id smallint [ref: > entrance.id]
+  garbage_chute_qty smallint //Кол-во стволов мусоропровода  
+  garbage_chute_length smallint //Протяженность ствола мусоропровода
+  material_type ENUM //Материал ствола мусоропровода
+  valve_location ENUM //Местонахождение загрузочного клапана
+  disposal_system ENUM //Система вывоза мусора
+  chambers_location ENUM //Расположение мусорокамермер
+  collector_type ENUM //Тип мусороприемника
+  ZUM_qty smallint //Кол-во ЗУМ
+}
+
+Table flats {
+  id smallint [primary key]
+  gas_stoves_qty smallint //Кол-во газовых плит
+  e_stoves_qty smallint //Кол-во электрических плит
+
 }
 
 
@@ -65,11 +107,9 @@ Table heating_organizations {
 
 // Серия дома, закончить
 enum building_series {
-  'I-515'
-  'I-155'
-  'I-511'
-  'I-510'
+  "I-515"
+  "I-155"
+  "I-511"
+  "I-510"
 }
 
-enum heating_organization {
-}
